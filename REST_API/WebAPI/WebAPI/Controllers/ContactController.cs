@@ -10,6 +10,7 @@ using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
+
     public class ContactController : ApiController
     {
         private ContactRepository contactRepository;
@@ -24,4 +25,9 @@ namespace WebAPI.Controllers
             return contactRepository.GetAllContacts();
         }
     }
+<<<<<<< HEAD
+ 
 }
+=======
+}
+>>>>>>> dfec273df46e09b2b5426cbf300baa35e647f04a
