@@ -20,10 +20,11 @@ namespace WebAPI.Models
         public JObject Insert(JObject temp_data) {
             dynamic data = temp_data;
             JObject resultado = new JObject();
-            string dataBase = "Data Source=EFREN-CE;Initial Catalog = L3M; Integrated Security = true";
-            SqlConnection dbConexion = new SqlConnection(dataBase);
-            dbConexion.Open();
-            SqlCommand Comando = new SqlCommand(string.Format(
+            string dataBase = "Data Source=EFREN-CE;Initial Catalog = L3M; Integrated Security = true";//Valores de conexion de la DB
+            SqlConnection dbConexion = new SqlConnection(dataBase);//Se conecta con la base especificada en el string dataBase
+            dbConexion.Open();//Abre la conexion
+            
+            SqlCommand Comando = new SqlCommand(string.Format(//Formato de comando para realizar un INSERT
                 "Insert Into CLIENTE (Cedula, FNacimiento, Contraseña, Nombre1, Nombre2, Apellido, Apellido2, Provincia, Canton," +
                 "Distrito, Indicaciones, Telefono, Padecimientos, Activo) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}')", 
                 (int)data.cedula, (string)data.fNacimiento, (string)data.contraseña, (string)data.nombre1, (string)data.nombre2, (string)data.apellido1, (string)data.apellido2,
@@ -41,16 +42,21 @@ namespace WebAPI.Models
             }
             return resultado;
         }
-
+        /**
+         * Selecciona la informacion de un cliente de la basde de datos, se utiliza para validar el login
+         * 
+         * **/
         public JObject SelectCliente(int user, string pass) {
             JObject resultado = new JObject();
             string dataBase = "Data Source=EFREN-CE;Initial Catalog = L3M; Integrated Security = true";
             SqlConnection dbConexion = new SqlConnection(dataBase);
             dbConexion.Open();
             //FOR JSON AUTO hace que SQL devuelva un JSON con la informacion del select
-            var sqlResult = string.Format("Select * From CLIENTE Where Cedula='{0}' and Contraseña='{1}' FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER",user,pass);
+            var sqlResult = string.Format("Select * From CLIENTE Where Cedula='{0}' and Contraseña='{1}' FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER",user,pass);//Formato de comando para realizar un SELECT
             SqlCommand Comando = new SqlCommand(sqlResult, dbConexion);
             var jsonResult = new StringBuilder();
+            //Comando almacena el JSON que devolvio la base de datos
+            //.ExecuteReader() permite obtener el contenido de la variable Comando
             SqlDataReader reader = Comando.ExecuteReader();
             if (!reader.HasRows)
             {
@@ -58,6 +64,9 @@ namespace WebAPI.Models
                 resultado.Add("codigo", 201);
             }
             else {
+                //Se construye un string con los valores del JSON dentro de Comando 
+                //Luego el string es parseado a JSON por medio de un JObject 
+                //El JObject ya se puede manejar con normalidad
                 while (reader.Read())
                 {
                     jsonResult.Append(reader.GetValue(0).ToString());
@@ -70,7 +79,12 @@ namespace WebAPI.Models
             reader.Close();
             return resultado;
         }
-        //**//
+        /**
+         * Cambia el atributo Activo del cliente indicado por medio de su numero de cedula
+         * Se utiliza un Stored Procedure a nivel de DB que niega el estado actual, ejemplo si el CLIENTE esta activo lo desactiva,
+         * pero si se encuentra desactivado lo vuelve a activar
+         * La funcion es generar una Pseudo eliminacion solo desactivando el cliente pero manteniendo el registro
+         * **/
         public Object ChangeStateCliente(int user)
         {
             JObject resultado = new JObject();
