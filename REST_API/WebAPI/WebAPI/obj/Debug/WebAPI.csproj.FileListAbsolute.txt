@@ -248,3 +248,6 @@ C:\Users\efren\Google Drive\TEC\6° Semestre\Bases De Datos\Proyecto 1\GasStatio
 C:\Users\efren\Google Drive\TEC\6° Semestre\Bases De Datos\Proyecto 1\GasStationPharmacy\REST_API\WebAPI\WebAPI\obj\Debug\WebAPI.csproj.CoreCompileInputs.cache
 C:\Users\efren\Google Drive\TEC\6° Semestre\Bases De Datos\Proyecto 1\GasStationPharmacy\REST_API\WebAPI\WebAPI\obj\Debug\WebAPI.dll
 C:\Users\efren\Google Drive\TEC\6° Semestre\Bases De Datos\Proyecto 1\GasStationPharmacy\REST_API\WebAPI\WebAPI\obj\Debug\WebAPI.pdb
+C:\Users\efren\Google Drive\TEC\6° Semestre\Bases De Datos\Proyecto 1\GasStationPharmacy\REST_API\WebAPI\WebAPI\bin\System.Web.Cors.dll
+C:\Users\efren\Google Drive\TEC\6° Semestre\Bases De Datos\Proyecto 1\GasStationPharmacy\REST_API\WebAPI\WebAPI\bin\System.Web.Http.Cors.dll
+C:\Users\efren\Google Drive\TEC\6° Semestre\Bases De Datos\Proyecto 1\GasStationPharmacy\REST_API\WebAPI\WebAPI\bin\System.Web.Http.Cors.xml
