@@ -1,0 +1,20 @@
+Insertar Cliente:
+
+{"cedula":2015019679,
+"fNacimiento":"03-05-1997",
+"contraseña":"12345",
+"nombre1":"Alex",
+"nombre2":"Campos",
+"apellido1":"Carvajal",
+"apellido2":"Valverde",
+"provincia":"Cartago",
+"canton":"Cartago",
+"distrito":"Oriental",
+"indicaciones":"150 metros norte de la iglesia",
+"telefono":60083548,
+"padecimiento":"dermatitis"}
+
+Login:
+{"user":116740214,
+"pass":"12345"
+}

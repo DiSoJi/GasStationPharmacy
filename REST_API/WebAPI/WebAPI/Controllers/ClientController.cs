@@ -8,6 +8,7 @@ using System.Web.Http.Cors;
 using Newtonsoft.Json.Linq;
 using System.Web.Http.Results;
 using System.Web.Mvc;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -26,16 +27,30 @@ namespace WebAPI.Controllers
             return x;
         }
 
-        public JObject Post(JObject x) {
+        public JObject Post(JObject x, string codigo) {
+            Cliente cliente = new Cliente();
+            dynamic data = 0;
             dynamic temp = x;
-            int temp2 = (int)temp.id;
-            JObject response =
-               new JObject(
-               new JProperty("Code", 100),
-               new JProperty("Description", "Succesfull"),
-               new JProperty("Id",temp2)
-               );
-            return response;
+            if (codigo == "C01")
+            { // C01 = insertar cliente 
+                data = cliente.Insert(x);
+            }
+            else if (codigo == "C00") {//C00 buscar un cliente
+                data = cliente.SelectCliente((int)temp.user, (string)temp.pass);
+            }
+        
+            return data;
         }
+        public JObject Delete(JObject x, string codigo) {
+            Cliente cliente = new Cliente();
+            dynamic temp = x;
+            dynamic data = 0;
+            if (codigo == "C03") {
+                data = cliente.ChangeStateCliente((int)temp.cedula);
+            }
+
+            return data;
+        }
+   
     }
 }
