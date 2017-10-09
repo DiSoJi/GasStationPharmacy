@@ -48,13 +48,9 @@ CREATE TABLE CLIENTE(
 	Distrito VARCHAR(50) NOT NULL,
 	Indicaciones VARCHAR(120) NOT NULL,
 	Telefono INT,
-	Padecimientos VARCHAR(300) NOT NULL,
 	Activo bit NOT NULL,
 	PRIMARY KEY (Cedula)
 );
-
-
-
 
 CREATE TABLE COMPAÑIA (
 	ID INT NOT NULL,
