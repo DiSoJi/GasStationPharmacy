@@ -18,6 +18,7 @@ namespace WebAPI.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ClientController : ApiController
     {
+        Cliente cliente = new Cliente();
         public string Get(string x) {
             JObject response =
                 new JObject(
@@ -28,7 +29,6 @@ namespace WebAPI.Controllers
         }
 
         public JObject Post(JObject x, string codigo) {
-            Cliente cliente = new Cliente();
             dynamic data = 0;
             dynamic temp = x;
             if (codigo == "C01")
@@ -42,7 +42,6 @@ namespace WebAPI.Controllers
             return data;
         }
         public JObject Delete(JObject x, string codigo) {
-            Cliente cliente = new Cliente();
             dynamic temp = x;
             dynamic data = 0;
             if (codigo == "C03") {
