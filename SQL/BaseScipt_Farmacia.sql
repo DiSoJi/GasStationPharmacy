@@ -28,10 +28,12 @@ CREATE TABLE EMPLEADO(
 );
 
 CREATE TABLE PADECIMIENTOS (
-	ID INT IDENTITY(1,1) NOT NULL,
-	Descripcion VARCHAR(80) NOT NULL,
-	Activo bit NOT NULL,
+	ID INT NOT NULL,
 	CedulaCliente INT NOT NULL,
+	Descripcion VARCHAR(80) NOT NULL,
+	FechaPadeci DATE NOT NULL,
+	Activo bit NOT NULL,
+	
 	PRIMARY KEY(ID)
 );
 
@@ -75,7 +77,8 @@ CREATE TABLE DESC_PEDIDO (
 	CedCliente INT NOT NULL,
 	IDSucursal INT NOT NULL,
 	Telefono INT NOT NULL,
-	HoraRecojo INT NOT NULL,
+	HoraRecojo TIME NOT NULL,
+	FechaRecojo Date NOT NULL,
 	Cantidad INT NOT NULL,
 	Estado varchar(15) NOT NULL,
 	Activo bit NOT NULL,
