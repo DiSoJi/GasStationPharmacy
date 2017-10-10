@@ -25,14 +25,22 @@ namespace WebAPI.Controllers
             }
             else if (codigo == "E01") {
                 data = empleado.InsertEmpleado(data);
-
             }
             return data;
 
         }
 
+        public JObject Delete(JObject x, string codigo)
+        {
+            dynamic temp = x;
+            dynamic data = 0;
+            if (codigo == "E03")
+            {
+                data = empleado.ChangeStateEmpleado((int)temp.cedula);
+            }
 
-
+            return data;
+        }
 
     }
 }

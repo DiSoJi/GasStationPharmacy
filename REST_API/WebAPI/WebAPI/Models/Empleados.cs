@@ -102,6 +102,40 @@ namespace WebAPI.Models
             return resultado;
         }
 
+        /**
+        * Cambia el atributo Activo del Empleado indicado por medio de su numero de cedula
+        * Se utiliza un Stored Procedure a nivel de DB que niega el estado actual, ejemplo si el Empleado esta activo lo desactiva,
+        * pero si se encuentra desactivado lo vuelve a activar
+        * La funcion es generar una Pseudo eliminacion solo desactivando el cliente pero manteniendo el registro
+        * **/
+        public Object ChangeStateEmpleado(int user)
+        {
+            JObject resultado = new JObject();
+            try {
+                SqlConnection dbConexion = new SqlConnection(dataBase);
+                dbConexion.Open();
+                SqlCommand Comando = new SqlCommand("UpdateEmpleado_Activo", dbConexion);//LLama un Stored Procedur
+                Comando.CommandType = CommandType.StoredProcedure;
+                Comando.Parameters.Add("@Cedula", SqlDbType.Int).Value = user;
+                int temp = Comando.ExecuteNonQuery();
+                if (temp == -1)
+                {
+                    resultado.Add("descripcion", "Exito");
+                    resultado.Add("codigo", 200);
+                }
+                else
+                {
+                    resultado.Add("descripcion", "Error");
+                    resultado.Add("codigo", 201);
+                }
+            }
+            catch (Exception ex) {
+                resultado.Add("descripcion", "Error");
+                resultado.Add("codigo", 201);
+            }
+            
+            return resultado;
+        }
 
 
     }

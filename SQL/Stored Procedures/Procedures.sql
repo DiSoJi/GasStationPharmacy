@@ -89,3 +89,28 @@ BEGIN
 	
 END
 GO
+-- =============================================
+-- Author:		<Efren Carvajal Valverde>
+-- Create date: <10/10/2017>
+-- Description:	<Comprueba en que condicion se encuentra un Empleado y lo modifica, ya sea activar o desactiva (Pseudo eliminación)>
+-- =============================================
+CREATE PROCEDURE UpdateEmpleado_Activo 
+	-- Add the parameters for the stored procedure here
+	@Cedula int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	if ((SELECT Activo from EMPLEADO Where Cedula=@Cedula) = 1)
+		BEGIN
+			UPDATE EMPLEADO SET Activo = 0 Where Cedula=@Cedula
+		END
+	else
+		BEGIN
+			UPDATE EMPLEADO SET Activo = 1 Where Cedula=@Cedula
+		END
+END
+GO
