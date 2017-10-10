@@ -11,7 +11,7 @@ using WebAPI.Models;
 namespace WebAPI.Controllers
 { 
     /**
-    * Client Controller
+    * Empleado Controller
     * */
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class EmpleadoController : ApiController
@@ -19,8 +19,12 @@ namespace WebAPI.Controllers
         Empleados empleado = new Empleados();// Objeto de tipo empleado para controlar la tabla empleado de la Base de datos
         public JObject Post(JObject x, string codigo) {
             dynamic data = x;
-            if (codigo == "E00") {//E00 = seleciona todos los empleados de una compañia
+            if (codigo == "E00")
+            {//E00 = seleciona todos los empleados de una compañia
                 data = empleado.TodosEmpleados((int)data.comp);
+            }
+            else if (codigo == "E01") {
+                data = empleado.InsertEmpleado(data);
 
             }
             return data;
