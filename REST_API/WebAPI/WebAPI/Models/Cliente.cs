@@ -20,15 +20,15 @@ namespace WebAPI.Models
         public JObject Insert(JObject temp_data) {
             dynamic data = temp_data;
             JObject resultado = new JObject();
-            string dataBase = "Data Source=EFREN-CE;Initial Catalog = L3M; Integrated Security = true";//Valores de conexion de la DB
+            string dataBase = "Data Source=EFREN-CE;Initial Catalog = Farmacias; Integrated Security = true";//Valores de conexion de la DB
             SqlConnection dbConexion = new SqlConnection(dataBase);//Se conecta con la base especificada en el string dataBase
             dbConexion.Open();//Abre la conexion
             
             SqlCommand Comando = new SqlCommand(string.Format(//Formato de comando para realizar un INSERT
-                "Insert Into CLIENTE (Cedula, FNacimiento, Contraseña, Nombre1, Nombre2, Apellido, Apellido2, Provincia, Canton," +
-                "Distrito, Indicaciones, Telefono, Padecimientos, Activo) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}')", 
+                "Insert Into CLIENTE (Cedula, FNacimiento, Contraseña, Nombre1, Nombre2, Apellido1, Apellido2, Provincia, Canton," +
+                "Distrito, Indicaciones, Telefono, Activo) values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}')", 
                 (int)data.cedula, (string)data.fNacimiento, (string)data.contraseña, (string)data.nombre1, (string)data.nombre2, (string)data.apellido1, (string)data.apellido2,
-                (string)data.provincia, (string)data.canton, (string)data.distrito, (string)data.indicaciones, (int)data.telefono, (string)data.padecimiento, 1), dbConexion);
+                (string)data.provincia, (string)data.canton, (string)data.distrito, (string)data.indicaciones, (int)data.telefono, 1), dbConexion);
             int temp = Comando.ExecuteNonQuery();
             dbConexion.Close();
             if (temp > 0)
@@ -48,11 +48,12 @@ namespace WebAPI.Models
          * **/
         public JObject SelectCliente(int user, string pass) {
             JObject resultado = new JObject();
-            string dataBase = "Data Source=EFREN-CE;Initial Catalog = L3M; Integrated Security = true";
+            string dataBase = "Data Source=EFREN-CE;Initial Catalog = Farmacias; Integrated Security = true";
             SqlConnection dbConexion = new SqlConnection(dataBase);
             dbConexion.Open();
             //FOR JSON AUTO hace que SQL devuelva un JSON con la informacion del select
-            var sqlResult = string.Format("Select * From CLIENTE Where Cedula='{0}' and Contraseña='{1}' FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER",user,pass);//Formato de comando para realizar un SELECT
+            var sqlResult = string.Format("Select Nombre1, Nombre2, Apellido1, Apellido2, Provincia, Canton, Distrito, Indicaciones, Telefono, FNacimiento " +
+                "From CLIENTE Where Cedula='{0}' and Contraseña='{1}' FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER",user,pass);//Formato de comando para realizar un SELECT
             SqlCommand Comando = new SqlCommand(sqlResult, dbConexion);
             var jsonResult = new StringBuilder();
             //Comando almacena el JSON que devolvio la base de datos
@@ -88,7 +89,7 @@ namespace WebAPI.Models
         public Object ChangeStateCliente(int user)
         {
             JObject resultado = new JObject();
-            string dataBase = "Data Source=EFREN-CE;Initial Catalog = L3M; Integrated Security = true";
+            string dataBase = "Data Source=EFREN-CE;Initial Catalog = Farmacias; Integrated Security = true";
             SqlConnection dbConexion = new SqlConnection(dataBase);
             dbConexion.Open();
             SqlCommand Comando = new SqlCommand("UpdateCLIENTE_Activo", dbConexion);//LLama un Stored Procedur
