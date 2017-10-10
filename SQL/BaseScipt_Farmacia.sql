@@ -76,6 +76,7 @@ CREATE TABLE DESC_PEDIDO (
 	IDSucursal INT NOT NULL,
 	Telefono INT NOT NULL,
 	HoraRecojo INT NOT NULL,
+	Cantidad INT NOT NULL,
 	Estado varchar(15) NOT NULL,
 	Activo bit NOT NULL,
 	PRIMARY KEY(ID)
