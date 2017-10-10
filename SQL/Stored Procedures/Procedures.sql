@@ -35,7 +35,7 @@ END
 GO
 -- =============================================
 -- Author:		<Efren Carvajal Valverde>
--- Create date: <10/10/2017>
+-- Create date: <9/10/2017>
 -- Description:	Retorna todos los empleados de una compañia con toda la informacion completa (joins)>
 -- =============================================
 CREATE PROCEDURE Select_TodoEmpleados
