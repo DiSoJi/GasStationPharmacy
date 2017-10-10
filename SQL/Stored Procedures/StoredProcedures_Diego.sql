@@ -109,3 +109,75 @@ BEGIN
 
 END
 GO
+
+
+-- =============================================
+-- Author:		<Diego Solís Jiménez>
+-- Create date: <9/10/2017>
+-- Description:	<Devuelve los datos más importantes de los Medicamentos por compañía(Haciendo enfasis en su cantidad por sucursal)>
+-- =============================================
+
+CREATE PROCEDURE Select_TodoMedicamentos
+	-- Add the parameters for the stored procedure here
+	@IDCompañia int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+
+	SELECT MEDICAMENTO.Nombre,MEDICAMENTO.Prescripcion,MEDICAMENTO.CasaFarmaceutica,SUCURSAL.Nombre as Sucursal,SUC_MEDICAMENTO.Cantidad
+
+	FROM (MEDICAMENTO INNER JOIN SUC_MEDICAMENTO ON SUC_MEDICAMENTO.NombreMedicamento = MEDICAMENTO.Nombre) INNER JOIN SUCURSAL ON SUC_MEDICAMENTO.IDSucursal = SUCURSAL.ID
+
+	WHERE SUCURSAL.IDCompañia = @IDCompañia AND SUCURSAL.Activo = 1 AND MEDICAMENTO.Activo = 1 
+	FOR JSON PATH; 
+
+END
+GO
+
+-- =============================================
+-- Author:		<Diego Solís Jiménez>
+-- Create date: <9/10/2017>
+-- Description:	<Agrega un medicamento, actualizando la tabla de SUC_MEDICAMENTO, y calculando la cantidad total entre las compañías>
+-- =============================================
+CREATE PROCEDURE Insert_Medicamento
+	-- Add the parameters for the stored procedure here
+	@NombreMedicamento varchar(30),
+	@CasaFarmaceutica varchar(30),
+	@IDSucursal int,
+	@Cantidad int,
+	@Prescripcion bit
+	
+AS
+BEGIN
+
+	INSERT INTO MEDICAMENTO VALUES (@NombreMedicamento,@CasaFarmaceutica,@Prescripcion, 0, 1);
+	INSERT INTO SUC_MEDICAMENTO(NombreMedicamento,IDSucursal,Cantidad,Activo) VALUES (@NombreMedicamento,@IDSucursal,@Cantidad,1);
+	UPDATE MEDICAMENTO SET MEDICAMENTO.CantidadTotal = (SELECT SUM(SUC_MEDICAMENTO.Cantidad) FROM SUC_MEDICAMENTO WHERE SUC_MEDICAMENTO.IDSucursal = @IDSucursal AND SUC_MEDICAMENTO.NombreMedicamento = @NombreMedicamento) WHERE MEDICAMENTO.Nombre = @NombreMedicamento;
+
+END
+GO
+
+
+-- =============================================
+-- Author:		<Diego Solís Jiménez>
+-- Create date: <10/10/2017>
+-- Description:	<Elimina un medicamento, actualizando la tabla de SUC_MEDICAMENTO y la tabla MEDICAMENTO poniendo Activo en cero (Borrado Lógico)>
+-- =============================================
+
+CREATE PROCEDURE Delete_Medicamento
+	-- Add the parameters for the stored procedure here
+	@NombreMedicamento varchar(30)
+
+AS
+BEGIN
+
+	UPDATE MEDICAMENTO SET MEDICAMENTO.Activo = 0 WHERE MEDICAMENTO.Nombre = @NombreMedicamento
+	UPDATE SUC_MEDICAMENTO SET SUC_MEDICAMENTO.Activo = 0 WHERE SUC_MEDICAMENTO.NombreMedicamento = @NombreMedicamento
+
+END
+GO
+
+
