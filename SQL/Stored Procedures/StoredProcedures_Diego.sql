@@ -57,6 +57,89 @@ GO
 -- =============================================
 -- Author:		<Diego Solís Jiménez>
 -- Create date: <9/10/2017>
+-- Description:	<Devuelve el nombre y la cantidad de todos los productos vendidos por compañía>
+-- =============================================
+CREATE PROCEDURE Estadistica_MasVendidosxCompañia
+	-- Add the parameters for the stored procedure here
+	@IDCompañia int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT CONT_PEDIDO.NombreMedicamento,DESC_PEDIDO.Cantidad
+	
+	FROM (((RECETA INNER JOIN EMPLEADO ON RECETA.CedDoctor = EMPLEADO.Cedula) 
+	FULL OUTER JOIN ((CONT_PEDIDO INNER JOIN ((DESC_PEDIDO INNER JOIN CLIENTE ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula) 
+	INNER JOIN SUCURSAL ON DESC_PEDIDO.IDSucursal = SUCURSAL.ID) ON CONT_PEDIDO.IDPedido = DESC_PEDIDO.ID) 
+	INNER JOIN MEDICAMENTO ON CONT_PEDIDO.NombreMedicamento = MEDICAMENTO.Nombre) ON CONT_PEDIDO.IDReceta = RECETA.ID))
+	
+	WHERE SUCURSAL.IDCompañia = @IDCompañia AND (DESC_PEDIDO.Estado = 'Facturado' OR DESC_PEDIDO.ESTADO = 'Retirado')
+	FOR JSON PATH; 
+
+END
+GO
+
+
+-- =============================================
+-- Author:		<Diego Solís Jiménez>
+-- Create date: <9/10/2017>
+-- Description:	<Devuelve el nombre y la cantidad de todos los productos vendidos de todas las compañías>
+-- =============================================
+CREATE PROCEDURE Estadistica_MasVendidostotal
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT CONT_PEDIDO.NombreMedicamento,DESC_PEDIDO.Cantidad
+	
+	FROM (((RECETA INNER JOIN EMPLEADO ON RECETA.CedDoctor = EMPLEADO.Cedula) 
+	FULL OUTER JOIN ((CONT_PEDIDO INNER JOIN ((DESC_PEDIDO INNER JOIN CLIENTE ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula) 
+	INNER JOIN SUCURSAL ON DESC_PEDIDO.IDSucursal = SUCURSAL.ID) ON CONT_PEDIDO.IDPedido = DESC_PEDIDO.ID) 
+	INNER JOIN MEDICAMENTO ON CONT_PEDIDO.NombreMedicamento = MEDICAMENTO.Nombre) ON CONT_PEDIDO.IDReceta = RECETA.ID))
+	
+	WHERE DESC_PEDIDO.Estado = 'Facturado' OR DESC_PEDIDO.ESTADO = 'Retirado'
+	FOR JSON PATH; 
+
+END
+GO
+
+
+-- =============================================
+-- Author:		<Diego Solís Jiménez>
+-- Create date: <9/10/2017>
+-- Description:	<Devuelve el nombre y la cantidad de todos los productos vendidos por compañía>
+-- =============================================
+CREATE PROCEDURE Estadistica_VentasxCompañia
+	-- Add the parameters for the stored procedure here
+	@IDCompañia int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT COUNT(DESC_PEDIDO.Estado)
+	
+	FROM (((RECETA INNER JOIN EMPLEADO ON RECETA.CedDoctor = EMPLEADO.Cedula) 
+	FULL OUTER JOIN ((CONT_PEDIDO INNER JOIN ((DESC_PEDIDO INNER JOIN CLIENTE ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula) 
+	INNER JOIN SUCURSAL ON DESC_PEDIDO.IDSucursal = SUCURSAL.ID) ON CONT_PEDIDO.IDPedido = DESC_PEDIDO.ID) 
+	INNER JOIN MEDICAMENTO ON CONT_PEDIDO.NombreMedicamento = MEDICAMENTO.Nombre) ON CONT_PEDIDO.IDReceta = RECETA.ID))
+	
+	WHERE SUCURSAL.IDCompañia = @IDCompañia AND (DESC_PEDIDO.Estado = 'Facturado' OR DESC_PEDIDO.ESTADO = 'Retirado')
+	FOR JSON PATH; 
+
+END
+GO
+
+
+-- =============================================
+-- Author:		<Diego Solís Jiménez>
+-- Create date: <9/10/2017>
 -- Description:	<Devuelve los datos más importantes de los pedidos por Cliente>
 -- =============================================
 CREATE PROCEDURE Select_PedidosxCliente
@@ -179,5 +262,4 @@ BEGIN
 
 END
 GO
-
 
