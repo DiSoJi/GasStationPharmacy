@@ -5,9 +5,12 @@
 -- =============================================
 CREATE PROCEDURE Select_TodoSucursales
 	-- Add the parameters for the stored procedure here
-	@IDCompañia int
+	@NombreCompañia varchar(30)
 AS
 BEGIN
+
+	DECLARE @IDCompañia int
+	SELECT @IDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
@@ -32,9 +35,11 @@ GO
 -- =============================================
 CREATE PROCEDURE Select_TodoPedidos
 	-- Add the parameters for the stored procedure here
-	@IDCompañia int
+	@NombreCompañia varchar(30)
 AS
 BEGIN
+	DECLARE @IDCompañia int
+	SELECT @IDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
@@ -54,17 +59,20 @@ BEGIN
 END
 GO
 
+
 -- =============================================
 -- Author:		<Diego Solís Jiménez>
 -- Create date: <9/10/2017>
 -- Description:	<Devuelve el nombre y la cantidad de todos los productos vendidos por compañía>
 -- =============================================
---Devolverlos en orden
+
 CREATE PROCEDURE Estadistica_MasVendidosxCompañia
 	-- Add the parameters for the stored procedure here
-	@IDCompañia int
+	@NombreCompañia varchar(30)
 AS
 BEGIN
+	DECLARE @IDCompañia int
+	SELECT @IDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
@@ -77,6 +85,9 @@ BEGIN
 	INNER JOIN MEDICAMENTO ON CONT_PEDIDO.NombreMedicamento = MEDICAMENTO.Nombre) ON CONT_PEDIDO.IDReceta = RECETA.ID))
 	
 	WHERE SUCURSAL.IDCompañia = @IDCompañia AND (DESC_PEDIDO.Estado = 'Facturado' OR DESC_PEDIDO.ESTADO = 'Retirado')
+
+	ORDER BY DESC_PEDIDO.Cantidad DESC
+
 	FOR JSON PATH; 
 
 END
@@ -89,7 +100,6 @@ GO
 -- Description:	<Devuelve el nombre y la cantidad de todos los productos vendidos de todas las compañías>
 -- =============================================
 
---Devolverlos en orden
 CREATE PROCEDURE Estadistica_MasVendidostotal
 
 AS
@@ -106,6 +116,8 @@ BEGIN
 	INNER JOIN MEDICAMENTO ON CONT_PEDIDO.NombreMedicamento = MEDICAMENTO.Nombre) ON CONT_PEDIDO.IDReceta = RECETA.ID))
 	
 	WHERE DESC_PEDIDO.Estado = 'Facturado' OR DESC_PEDIDO.ESTADO = 'Retirado'
+
+	ORDER BY DESC_PEDIDO.Cantidad DESC
 	FOR JSON PATH; 
 
 END
@@ -119,14 +131,17 @@ GO
 -- =============================================
 CREATE PROCEDURE Estadistica_VentasxCompañia
 	-- Add the parameters for the stored procedure here
-	@IDCompañia int
+	@NombreCompañia varchar(30)
 AS
 BEGIN
+
+	DECLARE @IDCompañia int
+	SELECT @IDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	SELECT COUNT(DESC_PEDIDO.Estado)
+	SELECT COUNT(DESC_PEDIDO.Estado) AS CantidadVentas
 	
 	FROM (((RECETA INNER JOIN EMPLEADO ON RECETA.CedDoctor = EMPLEADO.Cedula) 
 	FULL OUTER JOIN ((CONT_PEDIDO INNER JOIN ((DESC_PEDIDO INNER JOIN CLIENTE ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula) 
@@ -177,9 +192,12 @@ GO
 -- =============================================
 CREATE PROCEDURE Select_TodoClientes
 	-- Add the parameters for the stored procedure here
-	@IDCompañia int
+	@NombreCompañia varchar(30)
 AS
 BEGIN
+
+	DECLARE @IDCompañia int
+	SELECT @IDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
@@ -205,9 +223,12 @@ GO
 
 CREATE PROCEDURE Select_TodoMedicamentos
 	-- Add the parameters for the stored procedure here
-	@IDCompañia int
+	@NombreCompañia varchar(30)
 AS
 BEGIN
+
+	DECLARE @IDCompañia int
+	SELECT @IDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
@@ -257,6 +278,8 @@ CREATE PROCEDURE Delete_MedicamentoxSucursal
 	-- Add the parameters for the stored procedure here
 	@NombreMedicamento varchar(30),
 	@IDSucursal int
+
+
 AS
 BEGIN
 
@@ -272,33 +295,37 @@ GO
 -- =============================================
 
 CREATE PROCEDURE Delete_MedicamentoxCompañia
-	-- Add the parameters for the stored procedure here
-	@NombreMedicamento varchar(30),
-	@NombreCompañia varchar(30)
+  -- Add the parameters for the stored procedure here
+  @NombreMedicamento varchar(30),
+  @NombreCompañia varchar(30)
 
 AS
 BEGIN
-	
-	DECLARE @TempIDCompañia int
-	DECLARE @NumeroSucursales int
-	DECLARE @i int = 1
-	DECLARE @Cantidad int
-	SELECT @NumeroSucursales = COUNT(*) FROM SUCURSAL
-	SELECT @TempIDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
-	
-	  
+  
+  DECLARE @TempIDCompañia int
+  DECLARE @NumeroSucursales int
+  DECLARE @i int = 1
+  DECLARE @Cantidad int
+  SELECT @NumeroSucursales = COUNT(*) FROM SUCURSAL
+  SELECT @TempIDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
+  
+    
 
-	While(@i <= @NumeroSucursales)
-	BEGIN
+  While(@i <= @NumeroSucursales)
+  BEGIN
 
-		if( (SELECT IDCompañia FROM SUCURSAL WHERE SUCURSAL.ID = @i) = @TempIDCompañia)
-		BEGIN
-			SELECT @Cantidad = SUC_MEDICAMENTO.Cantidad FROM SUC_MEDICAMENTO WHERE MEDICAMENTO.Nombre = @NombreMedicamento
-			UPDATE MEDICAMENTO SET MEDICAMENTO.CantidadTotal = MEDICAMENTO.CantidadTotal - @Cantidad
-			UPDATE SUC_MEDICAMENTO SET SUC_MEDICAMENTO.Activo = 0,SUC_MEDICAMENTO.Cantidad = 0  WHERE SUC_MEDICAMENTO.IDSucursal = @i AND SUC_MEDICAMENTO.NombreMedicamento = @NombreMedicamento
-		END
-		SET @i = @i + 1
-	END
-	
+    if( (SELECT IDCompañia FROM SUCURSAL WHERE SUCURSAL.ID = @i) = @TempIDCompañia)
+    BEGIN
+      SELECT @Cantidad = SUC_MEDICAMENTO.Cantidad FROM SUC_MEDICAMENTO WHERE SUC_MEDICAMENTO.NombreMedicamento = @NombreMedicamento and SUC_MEDICAMENTO.IDSucursal = @i
+      UPDATE SUC_MEDICAMENTO SET SUC_MEDICAMENTO.Activo = 0 WHERE SUC_MEDICAMENTO.IDSucursal = @i AND SUC_MEDICAMENTO.NombreMedicamento = @NombreMedicamento
+      IF (@@ROWCOUNT > 0)
+      BEGIN
+        UPDATE MEDICAMENTO SET MEDICAMENTO.CantidadTotal -= @Cantidad  WHERE MEDICAMENTO.Nombre = @NombreMedicamento
+      END
+    END
+    SET @i = @i + 1
+  END
+  
 END
-GO 
+GO
+
