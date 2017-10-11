@@ -21,10 +21,10 @@ INSERT INTO EMPLEADO VALUES (704410874,'28-05-1995','AYOMACHI','JOSE','ANDREA','
 INSERT INTO EMPLEADO VALUES (604550117,'08-05-1960','NOHEART','HOJA','LATA','HOMBRE','DE','OZZ','OZZY','ORDE','500m SURESTE DEL CAMPO DE MAIZ',30425688,1,2,NULL,1);
 INSERT INTO EMPLEADO VALUES (309810454,'15-02-1965','NOBRAIN','ESPANTA','PAJAROS','PAJA','TRAPO','OZZ','OZZY','ORDE','LADO ESTE DEL CAMPO DE MAIZ',56448713,3,2,NULL,1);
 
-INSERT INTO SUCURSAL VALUES (1,604310114,1,'San Pedro','Sucursal para distribución',1);
-INSERT INTO SUCURSAL VALUES (2,704410874,1,'Pavas','Sucursal de proximidad',1);
-INSERT INTO SUCURSAL VALUES (3,604550117,2,'Neilly','Sucursal para distribución',1);
-INSERT INTO SUCURSAL VALUES (4,309810454,2,'Canoas','Sucursal de proximidad',1);
+INSERT INTO SUCURSAL(CedAdmin,IDCompañia,Nombre,Descripcion,Provincia,Canton,Distrito,Indicaciones,Activo) VALUES (604310114,1,'San Pedro','Sucursal para distribución','San José','San Pedro','Misterio','300m sur del palo de mango',1);
+INSERT INTO SUCURSAL(CedAdmin,IDCompañia,Nombre,Descripcion,Provincia,Canton,Distrito,Indicaciones,Activo) VALUES (704410874,1,'Pavas','Sucursal de proximidad','San José','San Pedro','Otro','Del abastecedor el Rey 200 m oeste',1);
+INSERT INTO SUCURSAL(CedAdmin,IDCompañia,Nombre,Descripcion,Provincia,Canton,Distrito,Indicaciones,Activo) VALUES (604550117,2,'Neilly','Sucursal para distribución','Puntarenas','Corredores','Corredor','Del Banco Nacional 100 m sur',1);
+INSERT INTO SUCURSAL(CedAdmin,IDCompañia,Nombre,Descripcion,Provincia,Canton,Distrito,Indicaciones,Activo) VALUES (309810454,2,'Canoas','Sucursal de proximidad','Puntarenas','Paso Canoas','La Cuesta','Del Deposito BHX 150 m suroeste',1);
 
 
 UPDATE EMPLEADO SET IDSucursal = 1 WHERE EMPLEADO.Cedula = 604310114;
@@ -36,12 +36,12 @@ INSERT INTO RECETA VALUES (1,704410874,'NO PICTURE',1);
 
 
 INSERT INTO DESC_PEDIDO VALUES (1,604310114,1,86442282,'15:00','07-07-2017',1,'Nuevo',1);
-INSERT INTO DESC_PEDIDO VALUES (2,604310114,2,86442282,'15:00','08-07-2017',8,'Nuevo',1);
+--INSERT INTO DESC_PEDIDO VALUES (2,604310114,2,86442282,'15:00','08-07-2017',8,'Nuevo',1);
 INSERT INTO DESC_PEDIDO VALUES (3,604310114,2,86442282,'15:00','08-07-2017',4,'Nuevo',1);
 INSERT INTO DESC_PEDIDO VALUES (4,309810454,3,56448713,'15:00','09-07-2017',4,'Nuevo',1);
 
 INSERT INTO CONT_PEDIDO VALUES (1,1,'Gavirol',1,1);
-INSERT INTO CONT_PEDIDO VALUES (2,2,'Anti-Fludes',NULL,1);
+INSERT INTO CONT_PEDIDO VALUES (2,1,'Anti-Fludes',NULL,1);
 INSERT INTO CONT_PEDIDO VALUES (3,3,'Dorival',NULL,1);
 INSERT INTO CONT_PEDIDO VALUES (4,4,'Panadol',NULL,1);
 

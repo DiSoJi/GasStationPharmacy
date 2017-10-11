@@ -13,7 +13,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	SELECT SUCURSAL.ID,SUCURSAL.Nombre,EMPLEADO.Cedula as CedulaAdmin,EMPLEADO.Nombre1 as NombreAdmin,EMPLEADO.Apellido1 as ApellidoAdmin, 
-	COMPAÑIA.Nombre as NombreCompañia,SUCURSAL.Descripcion
+	COMPAÑIA.Nombre as NombreCompañia,SUCURSAL.Descripcion, SUCURSAL.Provincia, SUCURSAL.Canton, SUCURSAL.Distrito, SUCURSAL.Indicaciones
 	
 	FROM ((SUCURSAL INNER JOIN EMPLEADO ON SUCURSAL.CedAdmin = EMPLEADO.Cedula) 
 	INNER JOIN COMPAÑIA ON SUCURSAL.IDCompañia = COMPAÑIA.ID)
@@ -40,7 +40,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 
-	SELECT CONT_PEDIDO.ID,CLIENTE.Cedula AS CedulaCliente,CLIENTE.Nombre1 AS NombreCliente,CLIENTE.Apellido1 AS ApellidoCliente,SUCURSAL.Nombre AS NombreSucursal,
+	SELECT DESC_PEDIDO.ID,CLIENTE.Cedula AS CedulaCliente,CLIENTE.Nombre1 AS NombreCliente,CLIENTE.Apellido1 AS ApellidoCliente,SUCURSAL.Nombre AS NombreSucursal,
 	DESC_PEDIDO.Telefono,DESC_PEDIDO.HoraRecojo,DESC_PEDIDO.FechaRecojo,DESC_PEDIDO.Estado, MEDICAMENTO.Nombre as NombreMedicamento, DESC_PEDIDO.Cantidad, EMPLEADO.Cedula as CedulaDoctor,RECETA.Foto
 	
 	FROM (((RECETA INNER JOIN EMPLEADO ON RECETA.CedDoctor = EMPLEADO.Cedula) 
@@ -59,6 +59,7 @@ GO
 -- Create date: <9/10/2017>
 -- Description:	<Devuelve el nombre y la cantidad de todos los productos vendidos por compañía>
 -- =============================================
+--Devolverlos en orden
 CREATE PROCEDURE Estadistica_MasVendidosxCompañia
 	-- Add the parameters for the stored procedure here
 	@IDCompañia int
@@ -87,6 +88,8 @@ GO
 -- Create date: <9/10/2017>
 -- Description:	<Devuelve el nombre y la cantidad de todos los productos vendidos de todas las compañías>
 -- =============================================
+
+--Devolverlos en orden
 CREATE PROCEDURE Estadistica_MasVendidostotal
 
 AS
@@ -247,19 +250,55 @@ GO
 -- =============================================
 -- Author:		<Diego Solís Jiménez>
 -- Create date: <10/10/2017>
--- Description:	<Elimina un medicamento, actualizando la tabla de SUC_MEDICAMENTO y la tabla MEDICAMENTO poniendo Activo en cero (Borrado Lógico)>
+-- Description:	<Elimina un medicamento, actualizando la tabla de SUC_MEDICAMENTO poniendo Activo en cero (Borrado Lógico), Para la sucursal indicada>
 -- =============================================
 
-CREATE PROCEDURE Delete_Medicamento
+CREATE PROCEDURE Delete_MedicamentoxSucursal
 	-- Add the parameters for the stored procedure here
-	@NombreMedicamento varchar(30)
-
+	@NombreMedicamento varchar(30),
+	@IDSucursal int
 AS
 BEGIN
 
-	UPDATE MEDICAMENTO SET MEDICAMENTO.Activo = 0 WHERE MEDICAMENTO.Nombre = @NombreMedicamento
-	UPDATE SUC_MEDICAMENTO SET SUC_MEDICAMENTO.Activo = 0 WHERE SUC_MEDICAMENTO.NombreMedicamento = @NombreMedicamento
+	UPDATE SUC_MEDICAMENTO SET SUC_MEDICAMENTO.Activo = 0 WHERE (SUC_MEDICAMENTO.NombreMedicamento = @NombreMedicamento AND SUC_MEDICAMENTO.IDSucursal = @IDSucursal)
 
 END
 GO
 
+-- =============================================
+-- Author:		<Efren Carvajal Valverde>
+-- Create date: <10/10/2017>
+-- Description:	<Elimina un medicamento, actualizando la tabla de SUC_MEDICAMENTO poniendo Activo en cero (Borrado Lógico) Para todas las sucursales de una compañia>
+-- =============================================
+
+CREATE PROCEDURE Delete_MedicamentoxCompañia
+	-- Add the parameters for the stored procedure here
+	@NombreMedicamento varchar(30),
+	@NombreCompañia varchar(30)
+
+AS
+BEGIN
+	
+	DECLARE @TempIDCompañia int
+	DECLARE @NumeroSucursales int
+	DECLARE @i int = 1
+	DECLARE @Cantidad int
+	SELECT @NumeroSucursales = COUNT(*) FROM SUCURSAL
+	SELECT @TempIDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
+	
+	  
+
+	While(@i <= @NumeroSucursales)
+	BEGIN
+
+		if( (SELECT IDCompañia FROM SUCURSAL WHERE SUCURSAL.ID = @i) = @TempIDCompañia)
+		BEGIN
+			SELECT @Cantidad = SUC_MEDICAMENTO.Cantidad FROM SUC_MEDICAMENTO WHERE MEDICAMENTO.Nombre = @NombreMedicamento
+			UPDATE MEDICAMENTO SET MEDICAMENTO.CantidadTotal = MEDICAMENTO.CantidadTotal - @Cantidad
+			UPDATE SUC_MEDICAMENTO SET SUC_MEDICAMENTO.Activo = 0,SUC_MEDICAMENTO.Cantidad = 0  WHERE SUC_MEDICAMENTO.IDSucursal = @i AND SUC_MEDICAMENTO.NombreMedicamento = @NombreMedicamento
+		END
+		SET @i = @i + 1
+	END
+	
+END
+GO 
