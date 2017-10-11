@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -59,7 +60,7 @@ namespace WebAPI.Models
             SqlConnection dbConexion = new SqlConnection(dataBase);
             dbConexion.Open();
             //FOR JSON AUTO hace que SQL devuelva un JSON con la informacion del select
-            var sqlResult = string.Format("Select Nombre1, Nombre2, Apellido1, Apellido2, Provincia, Canton, Distrito, Indicaciones, Telefono, FNacimiento " +
+            var sqlResult = string.Format("Select Cedula, Nombre1, Nombre2, Apellido1, Apellido2, Provincia, Canton, Distrito, Indicaciones, Telefono, FNacimiento " +
                 "From CLIENTE Where Cedula='{0}' and Contraseña='{1}' and Activo=1 FOR JSON AUTO, WITHOUT_ARRAY_WRAPPER",user,pass);//Formato de comando para realizar un SELECT
             SqlCommand Comando = new SqlCommand(sqlResult, dbConexion);
             var jsonResult = new StringBuilder();
@@ -114,6 +115,39 @@ namespace WebAPI.Models
             }
             return resultado;
         }
+
+        public JObject UpdateCliente(JObject x) {
+            JObject resultado = new JObject();
+            dynamic data = x;
+            try {
+                SqlConnection dbConexion = new SqlConnection(dataBase);
+                dbConexion.Open();
+                SqlCommand Comando = new SqlCommand(string.Format(//Formato de comando para realizar un INSERT
+                    "Update CLIENTE Set Cedula={0}, FNacimiento='{1}', Contraseña='{2}', Nombre1='{3}', Nombre2='{4}', Apellido1='{5}', Apellido2='{6}', Provincia='{7}', Canton='{8}'," +
+                    "Distrito='{9}', Indicaciones='{10}', Telefono='{11}', Activo=1 WHERE Cedula={0}",
+                    (int)data.cedula, (string)data.fNacimiento, (string)data.contraseña, (string)data.nombre1, (string)data.nombre2, (string)data.apellido1, (string)data.apellido2,
+                    (string)data.provincia, (string)data.canton, (string)data.distrito, (string)data.indicaciones, (int)data.telefono), dbConexion);
+                int temp = Comando.ExecuteNonQuery();
+                dbConexion.Close();
+                if (temp > 0)
+                {
+                    resultado.Add("descripcion", "Actualizacion Exitosa");
+                    resultado.Add("codigo", 200);
+                }
+                else
+                {
+                    resultado.Add("descripcion", "Error");
+                    resultado.Add("codigo", 201);
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado.Add("descripcion", "Error");
+                resultado.Add("codigo", 201);
+            }
+            return resultado;
+        }
+
 
     }
 }

@@ -50,6 +50,18 @@ namespace WebAPI.Controllers
 
             return data;
         }
+
+        public JObject Put(JObject x, string codigo) {
+            dynamic temp = x;
+            dynamic data = 0;
+            if (codigo == "C02")
+            {
+                data = cliente.UpdateCliente(temp);
+
+            }
+            return data;
+
+        }
    
     }
 }
