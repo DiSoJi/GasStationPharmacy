@@ -83,8 +83,8 @@ GO
 
 -- =============================================
 -- Author:		<Diego Solís Jiménez>
--- Create date: <9/10/2017>
--- Description:	<Crea un pedido, con un estado de nuevo, crea las entradas a las tablas necesarias>
+-- Create date: <14/10/2017>
+-- Description:	<Crea un pedido, con un estado de nuevo y devuelve el ID del pedido creado>
 -- =============================================
 
 CREATE PROCEDURE Create_Pedido
@@ -107,7 +107,26 @@ BEGIN
 END
 GO
 
+-- =============================================
+-- Author:		<Diego Solís Jiménez>
+-- Create date: <14/10/2017>
+-- Description:	<Crea un pedido, con un estado de nuevo y devuelve el ID del pedido creado>
+-- =============================================
 
+CREATE PROCEDURE Create_CONT_Pedido
+
+	@IDPedido int,
+	@NombreMedicamento varchar(30),
+	@IDReceta int,
+	@Cantidad int
+	
+AS
+BEGIN
+
+	INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (@IDPedido,@NombreMedicamento,@IDReceta,@Cantidad,1);
+
+END
+GO
 
 -- =============================================
 -- Author:		<Diego Solís Jiménez>
