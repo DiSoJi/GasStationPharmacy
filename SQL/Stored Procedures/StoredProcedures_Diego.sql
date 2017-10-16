@@ -46,7 +46,7 @@ BEGIN
 
 
 	SELECT DESC_PEDIDO.ID,CLIENTE.Cedula AS CedulaCliente,CLIENTE.Nombre1 AS NombreCliente,CLIENTE.Apellido1 AS ApellidoCliente,SUCURSAL.Nombre AS NombreSucursal,
-	DESC_PEDIDO.Telefono,DESC_PEDIDO.HoraRecojo,DESC_PEDIDO.FechaRecojo,DESC_PEDIDO.Estado, MEDICAMENTO.Nombre as NombreMedicamento, DESC_PEDIDO.Cantidad, EMPLEADO.Cedula as CedulaDoctor,RECETA.Foto
+	DESC_PEDIDO.Telefono,DESC_PEDIDO.HoraRecojo,DESC_PEDIDO.FechaRecojo,DESC_PEDIDO.Estado, MEDICAMENTO.Nombre as NombreMedicamento, CONT_PEDIDO.Cantidad, EMPLEADO.Cedula as CedulaDoctor,RECETA.Foto
 	
 	FROM (((RECETA INNER JOIN EMPLEADO ON RECETA.CedDoctor = EMPLEADO.Cedula) 
 	FULL OUTER JOIN ((CONT_PEDIDO INNER JOIN ((DESC_PEDIDO INNER JOIN CLIENTE ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula) 
@@ -84,6 +84,34 @@ GO
 -- =============================================
 -- Author:		<Diego Solís Jiménez>
 -- Create date: <9/10/2017>
+-- Description:	<Crea un pedido, con un estado de nuevo, crea las entradas a las tablas necesarias>
+-- =============================================
+
+CREATE PROCEDURE Create_Pedido
+
+	@IDSucursal int,
+	@CedulaCliente int,
+	@Telefono int,
+	@HoraRecojo time,
+	@FechaRecojo date
+	
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DECLARE @IDPedido int
+	
+	INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (@CedulaCliente,@IDSucursal,@Telefono,@HoraRecojo,@FechaRecojo,'Nuevo',1)
+	SELECT @IDPedido = COUNT(*) FROM DESC_PEDIDO
+	SELECT @IDPedido AS IDPedido
+	FOR JSON PATH; 
+END
+GO
+
+
+
+-- =============================================
+-- Author:		<Diego Solís Jiménez>
+-- Create date: <9/10/2017>
 -- Description:	<Devuelve el nombre y la cantidad de todos los productos vendidos por compañía>
 -- =============================================
 
@@ -98,7 +126,7 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	SELECT CONT_PEDIDO.NombreMedicamento,DESC_PEDIDO.Cantidad
+	SELECT CONT_PEDIDO.NombreMedicamento,CONT_PEDIDO.Cantidad
 	
 	FROM (((RECETA INNER JOIN EMPLEADO ON RECETA.CedDoctor = EMPLEADO.Cedula) 
 	FULL OUTER JOIN ((CONT_PEDIDO INNER JOIN ((DESC_PEDIDO INNER JOIN CLIENTE ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula) 
@@ -107,7 +135,7 @@ BEGIN
 	
 	WHERE SUCURSAL.IDCompañia = @IDCompañia AND (DESC_PEDIDO.Estado = 'Facturado' OR DESC_PEDIDO.ESTADO = 'Retirado')
 
-	ORDER BY DESC_PEDIDO.Cantidad DESC
+	ORDER BY CONT_PEDIDO.Cantidad DESC
 
 	FOR JSON PATH; 
 
@@ -129,7 +157,7 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	SELECT CONT_PEDIDO.NombreMedicamento,DESC_PEDIDO.Cantidad
+	SELECT CONT_PEDIDO.NombreMedicamento,CONT_PEDIDO.Cantidad
 	
 	FROM (((RECETA INNER JOIN EMPLEADO ON RECETA.CedDoctor = EMPLEADO.Cedula) 
 	FULL OUTER JOIN ((CONT_PEDIDO INNER JOIN ((DESC_PEDIDO INNER JOIN CLIENTE ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula) 
@@ -138,7 +166,7 @@ BEGIN
 	
 	WHERE DESC_PEDIDO.Estado = 'Facturado' OR DESC_PEDIDO.ESTADO = 'Retirado'
 
-	ORDER BY DESC_PEDIDO.Cantidad DESC
+	ORDER BY CONT_PEDIDO.Cantidad DESC
 	FOR JSON PATH; 
 
 END
@@ -192,7 +220,7 @@ BEGIN
 
 
 	SELECT CONT_PEDIDO.ID,CLIENTE.Cedula AS CedulaCliente,CLIENTE.Nombre1 AS NombreCliente,CLIENTE.Apellido1 AS ApellidoCliente,SUCURSAL.Nombre AS NombreSucursal,
-	DESC_PEDIDO.Telefono,DESC_PEDIDO.HoraRecojo,DESC_PEDIDO.FechaRecojo,DESC_PEDIDO.Estado, MEDICAMENTO.Nombre as NombreMedicamento, DESC_PEDIDO.Cantidad, EMPLEADO.Cedula as CedulaDoctor,RECETA.Foto
+	DESC_PEDIDO.Telefono,DESC_PEDIDO.HoraRecojo,DESC_PEDIDO.FechaRecojo,DESC_PEDIDO.Estado, MEDICAMENTO.Nombre as NombreMedicamento, CONT_PEDIDO.Cantidad, EMPLEADO.Cedula as CedulaDoctor,RECETA.Foto
 	
 	FROM (((RECETA INNER JOIN EMPLEADO ON RECETA.CedDoctor = EMPLEADO.Cedula) 
 	FULL OUTER JOIN ((CONT_PEDIDO INNER JOIN ((DESC_PEDIDO INNER JOIN CLIENTE ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula) 
@@ -224,8 +252,8 @@ BEGIN
 	SET NOCOUNT ON;
 
 
-	SELECT CLIENTE.Nombre1,CLIENTE.Nombre2,CLIENTE.Apellido1,CLIENTE.Apellido2,CLIENTE.Cedula,CLIENTE.FNacimiento,CLIENTE.Telefono,CLIENTE.Provincia,
-	CLIENTE.Canton,CLIENTE.Distrito,CLIENTE.Indicaciones,PADECIMIENTOS.Descripcion,PADECIMIENTOS.FechaPadeci
+	SELECT DISTINCT CLIENTE.Nombre1,CLIENTE.Nombre2,CLIENTE.Apellido1,CLIENTE.Apellido2,CLIENTE.Cedula,CLIENTE.FNacimiento,CLIENTE.Telefono,CLIENTE.Provincia,
+	CLIENTE.Canton,CLIENTE.Distrito,CLIENTE.Indicaciones,PADECIMIENTOS.Descripcion,PADECIMIENTOS.FechaPadecimiento
 
 	FROM (CLIENTE FULL OUTER JOIN PADECIMIENTOS ON CLIENTE.Cedula = PADECIMIENTOS.CedulaCliente) INNER JOIN (DESC_PEDIDO INNER JOIN SUCURSAL ON DESC_PEDIDO.IDSucursal = SUCURSAL.ID) ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula
 

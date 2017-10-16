@@ -39,24 +39,23 @@ INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Es
 INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (604310114,2,86442282,'15:00','08-07-2017','Nuevo',1);
 INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (309810454,3,56448713,'15:00','09-07-2017','Nuevo',1);
 
-INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,IDReceta,Cantidad,Activo) VALUES (1,1,'Gavirol',1,1,1);
-INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,IDReceta,Cantidad,Activo) VALUES (2,1,'Anti-Fludes',8,NULL,1);
-INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,IDReceta,Cantidad,Activo) VALUES (3,3,'Dorival',4,NULL,1);
-INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,IDReceta,Cantidad,Activo) VALUES (4,4,'Panadol',4,NULL,1);
+INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (1,'Gavirol',1,1,1);
+INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (1,'Anti-Fludes',8,NULL,1);
+INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (3,'Dorival',4,NULL,1);
+INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (3,'Panadol',4,NULL,1);
 
 
-INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadeci,Activo) VALUES (604310114,'Dolor de cabeza','28-12-2017', 1);
-INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadeci,Activo) VALUES (604310114,'Mareos','04-01-2017', 1);
-INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadeci,Activo) VALUES (309810454,'Vomito','09-11-2017', 1);
-INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadeci,Activo) VALUES (604310114,'Fatiga Muscular','05-05-2017', 1);
-INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadeci,Activo) VALUES (604310114,'Migrañas','12-03-2017', 1);
-INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadeci,Activo) VALUES (704410874,'Migrañas','7-06-2017', 1);
-INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadeci,Activo) VALUES (704410874,'Sangrado Nasal','7-06-2017', 1);
-INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadeci,Activo) VALUES (704410874,'Irritación Ocular','7-06-2017', 1);
+INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadecimiento,Activo) VALUES (604310114,'Dolor de cabeza','28-12-2017', 1);
+INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadecimiento,Activo) VALUES (604310114,'Mareos','04-01-2017', 1);
+INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadecimiento,Activo) VALUES (309810454,'Vomito','09-11-2017', 1);
+INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadecimiento,Activo) VALUES (604310114,'Fatiga Muscular','05-05-2017', 1);
+INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadecimiento,Activo) VALUES (604310114,'Migrañas','12-03-2017', 1);
+INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadecimiento,Activo) VALUES (704410874,'Migrañas','7-06-2017', 1);
+INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadecimiento,Activo) VALUES (704410874,'Sangrado Nasal','7-06-2017', 1);
+INSERT INTO PADECIMIENTOS(CedulaCliente,Descripcion,FechaPadecimiento,Activo) VALUES (704410874,'Irritación Ocular','7-06-2017', 1);
 
 INSERT INTO SUC_MEDICAMENTO(NombreMedicamento,IDSucursal,Cantidad,Activo) VALUES ('Gavirol',1,300,1);
 INSERT INTO SUC_MEDICAMENTO(NombreMedicamento,IDSucursal,Cantidad,Activo) VALUES ('Anti-Fludes',2,100,1);
 INSERT INTO SUC_MEDICAMENTO(NombreMedicamento,IDSucursal,Cantidad,Activo) VALUES ('Dorival',3,500,1);
 INSERT INTO SUC_MEDICAMENTO(NombreMedicamento,IDSucursal,Cantidad,Activo) VALUES ('Panadol',4,1000,1);
 INSERT INTO SUC_MEDICAMENTO(NombreMedicamento,IDSucursal,Cantidad,Activo) VALUES ('Acetaminofen',1,300,1);
-;
