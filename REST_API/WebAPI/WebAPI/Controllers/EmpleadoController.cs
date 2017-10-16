@@ -23,8 +23,12 @@ namespace WebAPI.Controllers
             {//E00 = seleciona todos los empleados de una compañia
                 data = empleado.TodosEmpleados((int)data.comp);
             }
-            else if (codigo == "E01") {//E01 = Inserta Empleados 
+            else if (codigo == "E01")
+            {//E01 = Inserta Empleados 
                 data = empleado.InsertEmpleado(data);
+            }
+            else if (codigo == "E04") {//E04 = Obtener info empleado(login)
+                data = empleado.SelectEmpleado((int)data.user, (string)data.pass);
             }
             return data;
 
@@ -47,7 +51,7 @@ namespace WebAPI.Controllers
         {
             dynamic temp = x;
             dynamic data = 0;
-            if (codigo == "E02")//C02 = Actualizar Empleado
+            if (codigo == "E02")//E02 = Actualizar Empleado
             {
                 data = empleado.UpdateEmpleado(temp);
 
