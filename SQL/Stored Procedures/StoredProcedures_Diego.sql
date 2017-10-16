@@ -59,6 +59,27 @@ BEGIN
 END
 GO
 
+-- =============================================
+-- Author:		<Diego Solís Jiménez>
+-- Create date: <9/10/2017>
+-- Description:	<Cambia el estado de un pedido (nuevo, preparado, facturado y retirado)>
+-- =============================================
+
+CREATE PROCEDURE Update_Pedido
+
+	@IDSucursal int,
+	@IDDescPedido int,
+	@Estado varchar(15)
+AS
+BEGIN
+
+
+	UPDATE DESC_PEDIDO SET Estado = @Estado WHERE DESC_PEDIDO.ID = @IDDescPedido AND DESC_PEDIDO.IDSucursal =  @IDSucursal
+
+
+END
+GO
+
 
 -- =============================================
 -- Author:		<Diego Solís Jiménez>
@@ -204,11 +225,14 @@ BEGIN
 
 
 	SELECT CLIENTE.Nombre1,CLIENTE.Nombre2,CLIENTE.Apellido1,CLIENTE.Apellido2,CLIENTE.Cedula,CLIENTE.FNacimiento,CLIENTE.Telefono,CLIENTE.Provincia,
-	CLIENTE.Canton,CLIENTE.Distrito,CLIENTE.Indicaciones,PADECIMIENTOS.Descripcion
+	CLIENTE.Canton,CLIENTE.Distrito,CLIENTE.Indicaciones,PADECIMIENTOS.Descripcion,PADECIMIENTOS.FechaPadeci
 
 	FROM (CLIENTE FULL OUTER JOIN PADECIMIENTOS ON CLIENTE.Cedula = PADECIMIENTOS.CedulaCliente) INNER JOIN (DESC_PEDIDO INNER JOIN SUCURSAL ON DESC_PEDIDO.IDSucursal = SUCURSAL.ID) ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula
 
 	WHERE SUCURSAL.IDCompañia = @IDCompañia AND CLIENTE.Activo = 1 
+
+	ORDER BY CLIENTE.Cedula DESC
+
 	FOR JSON PATH; 
 
 END
