@@ -149,5 +149,100 @@ namespace WebAPI.Models
         }
 
 
+        public JObject TodoClientes(string comp)
+        {
+            JArray clientes = new JArray();
+            JObject resultado;
+            SqlConnection dbConexion = new SqlConnection(dataBase);
+            dbConexion.Open();
+            SqlCommand Comando = new SqlCommand("Select_TodoClientes", dbConexion);
+            Comando.CommandType = CommandType.StoredProcedure;
+            Comando.Parameters.Add("@NombreCompañia", SqlDbType.VarChar).Value = comp;
+            var jsonResult = new StringBuilder();
+            //Comando almacena el JSON que devolvio la base de datos
+            //.ExecuteReader() permite obtener el contenido de la variable Comando
+            SqlDataReader reader = Comando.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                resultado = new JObject(
+                    new JProperty("codigo", 201),
+                    new JProperty("descripcion", "Error")
+                );
+
+            }
+            else
+            {
+                //Se construye un string con los valores del JSON dentro de Comando 
+                //Luego el string es parseado a JSON por medio de un JObject 
+                //El JObject ya se puede manejar con normalidad
+                while (reader.Read())
+                {
+                    jsonResult.Append(reader.GetValue(0).ToString());
+                }
+                clientes = JArray.Parse(jsonResult.ToString());
+
+                int count = 0;
+                int tempCed = (int)clientes[0]["Cedula"];
+                JArray clientesFinales = new JArray();
+                var padecimientos = new List<string>();
+                var fechapadecimientos = new List<string>();
+                JObject tempJson = new JObject();
+                dynamic myArray1;
+                dynamic myArray2;
+                /*
+                 * La base de datos retorna tantos clientes como padecimientos tenga (toda la informacion repetida exepto por los datos del padecimiento)
+                 * Mediante este metodo se reagrupan todos los padecimientos de un mismo cliente y se envia un solo JSON por cada cliente con toda su informacion
+                 * */
+                foreach (JObject content in clientes.Children<JObject>())//For por cada JSON contenido en clientes(JArray)
+                {
+                    if (tempCed == (int)content["Cedula"]) //comprueba que el cliente siguiente es igual al anterior
+                    {
+                        tempCed = (int)content["Cedula"];
+                        padecimientos.Add((string)content["Descripcion"]);//Guarda la descripcion del padecimento 
+                        fechapadecimientos.Add((string)content["FechaPadecimiento"]);//Guarda la fecha del padecimiento 
+                    }
+                    else { //Si el cliente que sigue no es igual, se debe guardar la informacion obtenida del cliente anterior(optimizar)
+                        tempJson = (JObject)clientes[count]; //se toma el JSON contonedor del cliente a optimizar
+                        tempJson.Remove("Descripcion");//Se elimina el atributo Descripcion
+                        tempJson.Remove("FechaPadecimiento");//Se elimina el atributo FechaPadecimeinto
+                        myArray1 = padecimientos.ToArray(); //Se pasa la lista a un array
+                        myArray2 = fechapadecimientos.ToArray();//Se pasa la lista a un array
+                        tempJson.Add("Padecimientos", JToken.FromObject(myArray1));//Se agrega el nuevo parametro 
+                        tempJson.Add("FechaPadecimiento", JToken.FromObject(myArray2));//Se agrega el nuevo parametro 
+                        clientesFinales.Add(tempJson);//Se agrega el nuevo cliente(Json) a la lista de clientes optimizada
+                        padecimientos.Clear();//Se borra el contenido de la lista
+                        fechapadecimientos.Clear();
+                        tempCed = (int)content["Cedula"];
+                        padecimientos.Add((string)content["Descripcion"]);//Se optienen los datos del nuevo cliente a optimizar
+                        fechapadecimientos.Add((string)content["FechaPadecimiento"]);
+                    }
+                    count++;//cntador para saber cual JSON se debe modificar 
+                   
+                }
+                //Para el ultimo cliente el proceso se realiza aqui
+                tempJson = (JObject)clientes[count-1];
+                tempJson.Remove("Descripcion");
+                tempJson.Remove("FechaPadecimiento");
+                myArray1 = padecimientos.ToArray();
+                myArray2 = fechapadecimientos.ToArray();
+                tempJson.Add("Padecimientos", JToken.FromObject(myArray1));
+                tempJson.Add("FechaPadecimiento", JToken.FromObject(myArray2));
+                clientesFinales.Add(tempJson);
+                resultado = new JObject(
+                    new JProperty("Clientes", clientesFinales),
+                    new JProperty("codigo", 200),
+                    new JProperty("descripcion", "Exito")
+                );
+
+              
+            }
+            dbConexion.Close();
+            reader.Close();
+            
+            return resultado;
+
+        }
+
+
     }
 }

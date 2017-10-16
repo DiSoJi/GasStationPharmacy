@@ -19,13 +19,13 @@ namespace WebAPI.Controllers
     public class ClientController : ApiController
     {
         Cliente cliente = new Cliente();
-        public string Get(string x) {
+        public JObject Get() {
             JObject response =
                 new JObject(
                 new JProperty("Code", 200),
                 new JProperty("Description", "Succesfull")
                 );
-            return x;
+            return response;
         }
 
         public JObject Post(JObject x, string codigo) {
@@ -35,8 +35,12 @@ namespace WebAPI.Controllers
             { // C01 = insertar cliente 
                 data = cliente.Insert(x);
             }
-            else if (codigo == "C00") {//C00 buscar un cliente
+            else if (codigo == "C00")
+            {//C00 buscar un cliente
                 data = cliente.SelectCliente((int)temp.user, (string)temp.pass);
+            }
+            else if (codigo == "C04") {
+                data = cliente.TodoClientes((string)temp.comp);
             }
         
             return data;
@@ -51,10 +55,11 @@ namespace WebAPI.Controllers
             return data;
         }
 
+        //Recibe la instrucion de actualizar un cliente 
         public JObject Put(JObject x, string codigo) {
             dynamic temp = x;
             dynamic data = 0;
-            if (codigo == "C02")
+            if (codigo == "C02")//C02 = Actualizar Cliente
             {
                 data = cliente.UpdateCliente(temp);
 

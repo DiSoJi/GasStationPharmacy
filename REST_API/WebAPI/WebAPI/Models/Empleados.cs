@@ -137,6 +137,50 @@ namespace WebAPI.Models
             return resultado;
         }
 
+        public JObject UpdateEmpleado(JObject x) {
+            JObject resultado = new JObject();
+            dynamic data = x;
+            try
+            {
+                SqlConnection dbConexion = new SqlConnection(dataBase);
+                dbConexion.Open();
+                SqlCommand Comando = new SqlCommand("UpdateInfoEmpleado", dbConexion);
+                Comando.CommandType = CommandType.StoredProcedure;
+                Comando.Parameters.Add("@Cedula", SqlDbType.Int).Value = (int)data.cedula;
+                Comando.Parameters.Add("@FNacimiento", SqlDbType.Date).Value = (string)data.fNacimiento;
+                Comando.Parameters.Add("@Contraseña", SqlDbType.VarChar).Value = (string)data.contraseña;
+                Comando.Parameters.Add("@Nombre1", SqlDbType.VarChar).Value = (string)data.nombre1;
+                Comando.Parameters.Add("@Nombre2", SqlDbType.VarChar).Value = (string)data.nombre2;
+                Comando.Parameters.Add("@Apellido1", SqlDbType.VarChar).Value = (string)data.apellido1;
+                Comando.Parameters.Add("@Apellido2", SqlDbType.VarChar).Value = (string)data.apellido2;
+                Comando.Parameters.Add("@Provincia", SqlDbType.VarChar).Value = (string)data.provincia;
+                Comando.Parameters.Add("@Canton", SqlDbType.VarChar).Value = (string)data.canton;
+                Comando.Parameters.Add("@Distrito", SqlDbType.VarChar).Value = (string)data.distrito;
+                Comando.Parameters.Add("@Indicaciones", SqlDbType.VarChar).Value = (string)data.indicaciones;
+                Comando.Parameters.Add("@Telefono", SqlDbType.Int).Value = (int)data.telefono;
+                Comando.Parameters.Add("@Compañia", SqlDbType.VarChar).Value = (string)data.compañia;
+                Comando.Parameters.Add("@Sucursal", SqlDbType.VarChar).Value = (string)data.sucursal;
+                Comando.Parameters.Add("@Rol", SqlDbType.VarChar).Value = (string)data.rol;
+                int temp = Comando.ExecuteNonQuery();
+                dbConexion.Close();
+                if (temp == -1)
+                {
+                    resultado.Add("descripcion", "Actualizacion Exitosa");
+                    resultado.Add("codigo", 200);
+                }
+                else
+                {
+                    resultado.Add("descripcion", "Error");
+                    resultado.Add("codigo", 201);
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado.Add("descripcion", "Error");
+                resultado.Add("codigo", 201);
+            }
+            return resultado;
+        }
 
     }
 }

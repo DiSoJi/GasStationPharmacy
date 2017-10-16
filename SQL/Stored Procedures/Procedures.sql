@@ -114,3 +114,36 @@ BEGIN
 		END
 END
 GO
+
+-- =============================================
+-- Author:		Efren Carvajal Valverde
+-- Create date: 15/10/2017
+-- Description:	Actualiza la informacion de un empleado
+-- =============================================
+CREATE PROCEDURE UpdateInfoEmpleado
+	-- Add the parameters for the stored procedure here
+	@Nombre1 varChar(20), @Nombre2 varChar(20), @Apellido1 varChar(20), @Apellido2 varChar(20), @Contraseña varChar(20), @FNAcimiento date,
+	@Provincia varChar(50), @Canton varChar(50), @Distrito varChar(50), @Indicaciones varChar(120), @Telefono int, @Rol varChar(20),
+	@Compañia varChar(20), @Sucursal varChar(20), @Cedula int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SET NOCOUNT ON;
+	DECLARE @TempIDCompañia int;
+	DECLARE @TempIDSucursal int;
+	DECLARE @TempIDRol int;
+    -- Insert statements for procedure here
+	SELECT @TempIDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @Compañia;
+	SELECT @TempIDSucursal = SUCURSAL.ID FROM SUCURSAL WHERE SUCURSAL.Nombre = @Sucursal;
+	SELECT @TempIDRol = ROL.ID FROM ROL WHERE ROL.Descripcion = @Rol;
+	UPDATE EMPLEADO SET Cedula=@Cedula, Apellido1=@Apellido1, Apellido2=@Apellido2, Nombre1=@Nombre1, Nombre2=@Nombre1,
+		FNacimiento=@FNAcimiento, Contraseña=@Contraseña, Provincia=@Provincia, Canton=@Canton, Distrito=@Distrito, 
+		Indicaciones=@Indicaciones, Telefono=@Telefono, IDRol=@TempIDRol, IDCompañia=@TempIDCompañia, 
+		IDSucursal=@TempIDSucursal, Activo=1
+	WHERE EMPLEADO.Cedula = @Cedula
+END
+GO
