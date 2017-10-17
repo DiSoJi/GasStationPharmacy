@@ -226,13 +226,14 @@ BEGIN
 
 
 	SELECT DISTINCT CONT_PEDIDO.ID,CLIENTE.Cedula AS CedulaCliente,CLIENTE.Nombre1 AS NombreCliente,CLIENTE.Apellido1 AS ApellidoCliente,SUCURSAL.Nombre AS NombreSucursal,
-	DESC_PEDIDO.Telefono,DESC_PEDIDO.HoraRecojo,DESC_PEDIDO.FechaRecojo,DESC_PEDIDO.Estado, MEDICAMENTO.Nombre as NombreMedicamento, CONT_PEDIDO.Cantidad, EMPLEADO.Cedula as CedulaDoctor,RECETA.Foto
+	DESC_PEDIDO.Telefono,DESC_PEDIDO.HoraRecojo,DESC_PEDIDO.FechaRecojo,DESC_PEDIDO.Estado, CONT_PEDIDO.NombreMedicamento as NombreMedicamento, CONT_PEDIDO.Cantidad, RECETA.CedDoctor as CedulaDoctor,RECETA.Foto
 	
 	FROM (((RECETA INNER JOIN EMPLEADO ON RECETA.CedDoctor = EMPLEADO.Cedula) 
 	FULL OUTER JOIN ((CONT_PEDIDO INNER JOIN ((DESC_PEDIDO INNER JOIN CLIENTE ON DESC_PEDIDO.CedCliente = CLIENTE.Cedula) 
 	INNER JOIN SUCURSAL ON DESC_PEDIDO.IDSucursal = SUCURSAL.ID) ON CONT_PEDIDO.IDPedido = DESC_PEDIDO.ID) 
 	INNER JOIN MEDICAMENTO ON CONT_PEDIDO.NombreMedicamento = MEDICAMENTO.Nombre) ON CONT_PEDIDO.IDReceta = RECETA.ID))
 	
+	--FROM ((CLIENTE INNER JOIN (DESC_PEDIDO INNER JOIN SUCURSAL ON DESC_PEDIDO.IDSucursal = SUCURSAL.ID) ON CLIENTE.Cedula = DESC_PEDIDO.CedCliente) INNER JOIN (CONT_PEDIDO FULL OUTER JOIN RECETA ON CONT_PEDIDO.IDReceta = RECETA.ID))
 	WHERE CLIENTE.Cedula = @CedulaCliente AND CONT_PEDIDO.Activo = 1
 	FOR JSON PATH;
 
@@ -311,21 +312,34 @@ CREATE PROCEDURE Insert_Medicamento
 	-- Add the parameters for the stored procedure here
 	@NombreMedicamento varchar(30),
 	@CasaFarmaceutica varchar(30),
-	@IDSucursal int,
-	@Cantidad int,
 	@Prescripcion bit
 	
 AS
 BEGIN
 
 	INSERT INTO MEDICAMENTO VALUES (@NombreMedicamento,@CasaFarmaceutica,@Prescripcion, 0, 1);
+
+END
+GO
+
+-- =============================================
+-- Author:		<Diego Solís Jiménez>
+-- Create date: <9/10/2017>
+-- Description:	<Asigna un medicamento a una sucursal, actualizando la tabla de SUC_MEDICAMENTO, y calculando la cantidad total entre las compañías>
+-- =============================================
+CREATE PROCEDURE Insert_MedicamentoxSucursal
+	@NombreMedicamento varchar(30),
+	@IDSucursal int,
+	@Cantidad int
+
+AS
+BEGIN
+
 	INSERT INTO SUC_MEDICAMENTO(NombreMedicamento,IDSucursal,Cantidad,Activo) VALUES (@NombreMedicamento,@IDSucursal,@Cantidad,1);
 	UPDATE MEDICAMENTO SET MEDICAMENTO.CantidadTotal = (SELECT SUM(SUC_MEDICAMENTO.Cantidad) FROM SUC_MEDICAMENTO WHERE SUC_MEDICAMENTO.IDSucursal = @IDSucursal AND SUC_MEDICAMENTO.NombreMedicamento = @NombreMedicamento) WHERE MEDICAMENTO.Nombre = @NombreMedicamento;
 
 END
 GO
-
-
 -- =============================================
 -- Author:		<Diego Solís Jiménez>
 -- Create date: <10/10/2017>
@@ -336,7 +350,6 @@ CREATE PROCEDURE Delete_MedicamentoxSucursal
 	-- Add the parameters for the stored procedure here
 	@NombreMedicamento varchar(30),
 	@IDSucursal int
-
 
 AS
 BEGIN
