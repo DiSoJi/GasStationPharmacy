@@ -83,6 +83,7 @@ namespace WebAPI.Models
                 resultado = JObject.Parse(jsonResult.ToString());
                 resultado.Add("descripcion", "Exito");
                 resultado.Add("codigo", 200);
+                resultado.Add("tipo", "Cliente");
             }    
             dbConexion.Close();
             reader.Close();

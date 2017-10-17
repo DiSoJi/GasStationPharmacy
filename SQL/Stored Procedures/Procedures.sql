@@ -175,3 +175,53 @@ BEGIN
 	FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;;
 END
 GO
+-- =============================================
+-- Author:		Efren Carvajal Valverde
+-- Create date: 17/10/17
+-- Description:	Insertar una compañia 
+-- =============================================
+CREATE PROCEDURE InsertSucursal
+	-- Add the parameters for the stored procedure here
+	@CedAdmin int, @Nombre VarChar(30), @Descripcion VarChar(30), @Provincia VarChar(50), 
+	@Canton VarChar(50), @Distrito VarChar(50), @Indicaciones VarChar(120), @NombreComp VarChar(30)
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	DECLARE @TempIDCompañia int
+    -- Insert statements for procedure here
+	SELECT @TempIDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreComp;
+
+	INSERT INTO SUCURSAL  (CedAdmin, Nombre, Descripcion, Provincia, Canton, Distrito, 
+		Indicaciones, IDCompañia, Activo)
+     VALUES(@CedAdmin, @Nombre, @Descripcion, @Provincia, @Canton, @Distrito, 
+		@Indicaciones, @TempIDCompañia,  1)
+END
+GO
+-- =============================================
+-- Author:		<Efren Carvajal Valverde>
+-- Create date: <09/10/2017>
+-- Description:	<Comprueba en que condicion se encuentra una Sucursal  y lo modifica, ya sea activar o desactiva (Pseudo eliminación)>
+-- =============================================
+CREATE PROCEDURE UpdateSucursal_Activo
+	-- Add the parameters for the stored procedure here
+	@IDSucursal  int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	if ((SELECT Activo from SUCURSAL Where ID=@IDSucursal) = 1)
+		BEGIN
+			UPDATE SUCURSAL SET Activo = 0 Where ID=@IDSucursal
+		END
+	else
+		BEGIN
+			UPDATE SUCURSAL SET Activo = 1 Where ID=@IDSucursal
+		END
+END
+GO
