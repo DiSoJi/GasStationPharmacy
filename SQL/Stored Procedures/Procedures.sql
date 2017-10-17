@@ -40,9 +40,12 @@ GO
 -- =============================================
 CREATE PROCEDURE Select_TodoEmpleados
 	-- Add the parameters for the stored procedure here
-	@IDCompañia int
+	@NombreCompañia varchar(30)
 AS
 BEGIN
+
+	DECLARE @IDCompañia int
+	SELECT @IDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
