@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="computer">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Justified Nav Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="styles.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <div class="masthead" ng-controller="ClientCtrl">
+        <h3 class="text-muted">Sucursal</h3>
+
+        <nav class="navbar navbar-expand-md navbar-light bg-light rounded mb-3">
+          <div class="btn-group">
+          <button type="button" class="btn btn-default" data-toggle="dropdown">
+            {{type}} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu scrollable-menu" role="menu">
+            <li><a href="#" ng-model= "new" ng-click="nuevos()">Nuevos</a></li>
+            <li><a href="#" ng-click="preparados()">Preparados</a></li>
+            <li><a href="#" ng-click="facturados()">Facturados</a></li>
+            <li><a href="#" ng-click="retirados()">Retirados</a></li>
+          </ul>
+        </div>
+        </nav>
+      </div>
+
+      <!-- Jumbotron -->
+      <div ng-controller="ClientCtrl">
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Telèfono</th>
+              <th>Hora de Recojo</th>
+              <th>Medicamentos</th>
+            </tr>
+          </thead>
+
+        </table>
+      </div>
+
+      <!-- Site footer -->
+      <footer class="footer">
+        <p>&copy; Company 2017</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-route.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="suc-ctrl.js"></script>
+  </body>
+</html>
