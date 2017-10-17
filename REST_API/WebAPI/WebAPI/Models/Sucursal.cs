@@ -119,5 +119,45 @@ namespace WebAPI.Models
 
             return resultado;
         }
+
+        public JObject UpdateInfoSucursal(JObject x) {
+            dynamic data = x;
+            JObject resultado = new JObject();
+            try
+            {
+                SqlConnection dbConexion = new SqlConnection(dataBase);
+                dbConexion.Open();
+                SqlCommand Comando = new SqlCommand("UpdateInfoSucursal", dbConexion);
+                Comando.CommandType = CommandType.StoredProcedure;
+                Comando.Parameters.Add("@CedAdmin", SqlDbType.Int).Value = (int)data.cedAdmin;
+                Comando.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = (string)data.nombre;
+                Comando.Parameters.Add("@Descripcion", SqlDbType.VarChar).Value = (string)data.descripcion;
+                Comando.Parameters.Add("@Provincia", SqlDbType.VarChar).Value = (string)data.provincia;
+                Comando.Parameters.Add("@Canton", SqlDbType.VarChar).Value = (string)data.canton;
+                Comando.Parameters.Add("@Distrito", SqlDbType.VarChar).Value = (string)data.distrito;
+                Comando.Parameters.Add("@Indicaciones", SqlDbType.VarChar).Value = (string)data.indicaciones;
+
+                int temp = Comando.ExecuteNonQuery();
+                dbConexion.Close();
+                if (temp == -1)
+                {
+                    resultado.Add("descripcion", "Exito");
+                    resultado.Add("codigo", 200);
+                }
+                else
+                {
+                    resultado.Add("descripcion", "Error");
+                    resultado.Add("codigo", 201);
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado.Add("descripcion", "Error");
+                resultado.Add("codigo", 201);
+            }
+
+            return resultado;
+
+        }
     }
 }

@@ -34,3 +34,19 @@ Insertar Empleado:
 "sucursal":"Los Angeles",
 "compañia":"BombaTica"
 }
+
+Actualizar Sucursal 
+{"cedAdmin":2015019679,
+
+"nombre":"Nueva1",
+
+"provincia":"SJ",
+
+"canton":"BA",
+
+"distrito":"SA",
+
+"indicaciones":"jajaj",
+
+"descripcion":"es una payasada"
+}

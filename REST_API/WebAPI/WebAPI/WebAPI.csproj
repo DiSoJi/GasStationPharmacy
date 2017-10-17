@@ -187,6 +187,7 @@
     <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\EstadisticaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MedicamentosController.cs" />
     <Compile Include="Controllers\PedidosController.cs" />
     <Compile Include="Controllers\SucursalController.cs" />
     <Compile Include="Global.asax.cs">
@@ -194,6 +195,7 @@
     </Compile>
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\Empleados.cs" />
+    <Compile Include="Models\Medicamentos.cs" />
     <Compile Include="Models\Sucursal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
