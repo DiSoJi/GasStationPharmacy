@@ -62,7 +62,7 @@ namespace WebAPI.Models
                 Comando.CommandType = CommandType.StoredProcedure;
                 Comando.Parameters.Add("@NombreMedicamento", SqlDbType.VarChar).Value = (string)data.nombreMedicamento;
                 Comando.Parameters.Add("@IDSucursal", SqlDbType.Int).Value = (string)data.idSucursal;
-                Comando.Parameters.Add("@Cantidad", SqlDbType.VarChar).Value = (int)data.cantidad;
+                Comando.Parameters.Add("@Cantidad", SqlDbType.Int).Value = (int)data.cantidad;
                 int temp = Comando.ExecuteNonQuery();
                 dbConexion.Close();
                 if (temp > 0)

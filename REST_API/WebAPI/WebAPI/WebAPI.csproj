@@ -195,6 +195,7 @@
     </Compile>
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\Empleados.cs" />
+    <Compile Include="Models\Estadistica.cs" />
     <Compile Include="Models\Medicamentos.cs" />
     <Compile Include="Models\Sucursal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
