@@ -8,7 +8,7 @@ INSERT INTO COMPAÑIA VALUES (2,'BombaTica',1);
 
 INSERT INTO ROL VALUES (1,'Administrador',1);
 INSERT INTO ROL VALUES (2,'Doctor',1);
-INSERT INTO ROL VALUES (3,'Miscelaneo',1);
+INSERT INTO ROL VALUES (3,'Dependiente',1);
 
 INSERT INTO MEDICAMENTO VALUES ('Acetaminofen','Bayer',0, 300, 1);
 INSERT INTO MEDICAMENTO VALUES ('Panadol','Bayer',0, 1000, 1);
@@ -35,13 +35,13 @@ UPDATE EMPLEADO SET IDSucursal = 4 WHERE EMPLEADO.Cedula = 309810454;
 INSERT INTO RECETA(CedDoctor,Foto,Activo) VALUES (704410874,'NO PICTURE',1);
 
 
-INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (604310114,1,86442282,'15:00','07-07-2017','Nuevo',1);
+INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (604310114,1,86442282,'15:00','07-07-2017','Facturado',1);
 INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (604310114,2,86442282,'15:00','08-07-2017','Nuevo',1);
 INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (309810454,3,56448713,'15:00','09-07-2017','Nuevo',1);
 
 INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (1,'Gavirol',1,1,1);
 INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (1,'Anti-Fludes',8,NULL,1);
-INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (3,'Dorival',4,NULL,1);
+INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (2,'Dorival',4,NULL,1);
 INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (3,'Panadol',4,NULL,1);
 
 
