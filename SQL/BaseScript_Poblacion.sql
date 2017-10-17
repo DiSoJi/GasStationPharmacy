@@ -37,7 +37,7 @@ INSERT INTO RECETA(CedDoctor,Foto,Activo) VALUES (704410874,'NO PICTURE',1);
 
 INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (604310114,1,86442282,'15:00','07-07-2017','Facturado',1);
 INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (604310114,2,86442282,'15:00','08-07-2017','Nuevo',1);
-INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (309810454,3,56448713,'15:00','09-07-2017','Nuevo',1);
+INSERT INTO DESC_PEDIDO(CedCliente,IDSucursal,Telefono,HoraRecojo,FechaRecojo,Estado,Activo) VALUES (309810454,3,56448713,'15:00','09-07-2017','Retirado',1);
 
 INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (1,'Gavirol',1,1,1);
 INSERT INTO CONT_PEDIDO(IDPedido,NombreMedicamento,Cantidad,IDReceta,Activo) VALUES (1,'Anti-Fludes',8,NULL,1);
