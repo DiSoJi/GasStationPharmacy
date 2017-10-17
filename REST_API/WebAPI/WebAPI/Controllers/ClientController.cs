@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
             {//C00 buscar un cliente
                 data = cliente.SelectCliente((int)temp.user, (string)temp.pass);
             }
-            else if (codigo == "C04") {
+            else if (codigo == "C04") {//C04 = Obtener todos los clientes 
                 data = cliente.TodoClientes((string)temp.comp);
             }
         

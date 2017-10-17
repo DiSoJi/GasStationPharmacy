@@ -25,16 +25,47 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse" ng-controller="MainCtrl">
             <ul class="navbar-nav text-md-center nav-justified w-100">
-              <li class="nav-item dropdown" ng-repeat="title in titles">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{title.title}}</a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Clientes</a>
                 <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                  <li><a class="dropdown-item" href="#!create">{{title.option1}}</a></li>
-                  <li><a class="dropdown-item" href="#!update">{{title.option2}}</a></li>
-                  <li><a class="dropdown-item" href="#!delete">{{title.option3}}</a></li>
+                  <li><a class="dropdown-item" href="#!updateclient">Actualiza</a></li>
+                  <li><a class="dropdown-item" href="#!deleteclient">Eliminar</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Empleados</a>
+                <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                  <li><a class="dropdown-item" href="#!createemployee">Crear</a></li>
+                  <li><a class="dropdown-item" href="#!updateemployee">Actualizar</a></li>
+                  <li><a class="dropdown-item" href="#!deleteemployee">Eliminar</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Medicamentos</a>
+                <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                  <li><a class="dropdown-item" href="#!createmed">Crear</a></li>
+                  <li><a class="dropdown-item" href="#!updatetemed">Actualizar</a></li>
+                  <li><a class="dropdown-item" href="#!deletemed">Eliminar</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Roles</a>
+                <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                  <li><a class="dropdown-item" href="#!createrol">Crear</a></li>
+                  <li><a class="dropdown-item" href="#!updaterol">Actualizar</a></li>
+                  <li><a class="dropdown-item" href="#!deleterol">Eliminar</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sucursales</a>
+                <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                  <li><a class="dropdown-item" href="#!createsuc">Crear</a></li>
+                  <li><a class="dropdown-item" href="#!updatesuc">Actualizar</a></li>
+                  <li><a class="dropdown-item" href="#!deletesuc">Eliminar</a></li>
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#/main">Estadìsticas</a>
+                <a class="nav-link" href="#!stat">Estadìsticas</a>
               </li>
             </ul>
           </div>

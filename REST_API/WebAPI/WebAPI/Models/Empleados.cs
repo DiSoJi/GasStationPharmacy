@@ -20,7 +20,7 @@ namespace WebAPI.Models
             dbConexion.Open();
             SqlCommand Comando = new SqlCommand("Select_TodoEmpleados", dbConexion);
             Comando.CommandType = CommandType.StoredProcedure;
-            Comando.Parameters.Add("@IDCompañia", SqlDbType.Int).Value = comp;
+            Comando.Parameters.Add("@NombreCompañia", SqlDbType.VarChar).Value = comp;
             var jsonResult = new StringBuilder();
             //Comando almacena el JSON que devolvio la base de datos
             //.ExecuteReader() permite obtener el contenido de la variable Comando
