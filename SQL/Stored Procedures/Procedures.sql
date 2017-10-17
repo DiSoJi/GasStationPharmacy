@@ -225,3 +225,26 @@ BEGIN
 		END
 END
 GO
+-- =============================================
+-- Author:		Efren Carvajal Valverde
+-- Create date: 17/10/17
+-- Description:	Actualizar Sucursal 
+-- =============================================
+CREATE PROCEDURE UpdateInfoSucursal 
+	-- Add the parameters for the stored procedure here
+	@CedAdmin int, @Nombre VarChar(30), @Descripcion VarChar(30), @Provincia VarChar(50), 
+	@Canton VarChar(50), @Distrito VarChar(50), @Indicaciones VarChar(120)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	
+	UPDATE SUCURSAL SET CedAdmin=@CedAdmin, Nombre=@Nombre, Descripcion=@Descripcion, Provincia=@Provincia, Canton=@Canton,
+						Distrito=@Distrito, Indicaciones=@Indicaciones, Activo=1
+	WHERE CedAdmin = @CedAdmin
+END
+GO
+

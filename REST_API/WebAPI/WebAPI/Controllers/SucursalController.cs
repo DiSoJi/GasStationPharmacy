@@ -46,6 +46,13 @@ namespace WebAPI.Controllers
 
         }
 
+        public JObject PUT(JObject x, string codigo) {
+            dynamic data = x;
+            if (codigo == "S02") {//S02 = Actualizar Sucursal 
+                data = sucursal.UpdateInfoSucursal(data);
+            }
+            return data;
+        }
 
 
     }
