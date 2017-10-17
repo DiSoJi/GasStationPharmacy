@@ -380,8 +380,6 @@ BEGIN
   SELECT @NumeroSucursales = COUNT(*) FROM SUCURSAL
   SELECT @TempIDCompañia = COMPAÑIA.ID FROM COMPAÑIA WHERE COMPAÑIA.Nombre = @NombreCompañia
   
-    
-
   While(@i <= @NumeroSucursales)
   BEGIN
 
@@ -399,4 +397,3 @@ BEGIN
   
 END
 GO
-
