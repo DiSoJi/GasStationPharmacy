@@ -182,5 +182,44 @@ namespace WebAPI.Models
             return resultado;
         }
 
+        /**
+        * Selecciona la informacion de un emppleado de la basde de datos, se utiliza para validar el login
+        * 
+        * **/
+        public JObject SelectEmpleado(int user, string pass)
+        {
+            JObject resultado = new JObject();
+            SqlConnection dbConexion = new SqlConnection(dataBase);
+            dbConexion.Open();
+            SqlCommand Comando = new SqlCommand("SelectInfoEmpleado", dbConexion);
+            Comando.CommandType = CommandType.StoredProcedure;
+            Comando.Parameters.Add("@IDEmpleado", SqlDbType.Int).Value = user;
+            Comando.Parameters.Add("@Pass", SqlDbType.VarChar).Value = pass;
+            var jsonResult = new StringBuilder();
+            //Comando almacena el JSON que devolvio la base de datos
+            //.ExecuteReader() permite obtener el contenido de la variable Comando
+            SqlDataReader reader = Comando.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                resultado.Add("descripcion", "Error");
+                resultado.Add("codigo", 201);
+            }
+            else
+            {
+                //Se construye un string con los valores del JSON dentro de Comando 
+                //Luego el string es parseado a JSON por medio de un JObject 
+                //El JObject ya se puede manejar con normalidad
+                while (reader.Read())
+                {
+                    jsonResult.Append(reader.GetValue(0).ToString());
+                }
+                resultado = JObject.Parse(jsonResult.ToString());
+                resultado.Add("descripcion", "Exito");
+                resultado.Add("codigo", 200);
+            }
+            dbConexion.Close();
+            reader.Close();
+            return resultado;
+        }
     }
 }

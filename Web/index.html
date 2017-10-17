@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet">
-    <link rel="stylesheet" href="./main2.css">
-    <title>Login</title>
-</head>
-<body>
-    <div class="login__container">
-       <div class="login__top">
-          <h2 class="login__title">Login</h2>
-       </div>
-        
-        <form class="login__form" action="index1.html">
-            <input type="text" placeholder="&#128100; Usuario" required autofocus>
-            <input type="password" placeholder="&#x1F512; Contraseña" required>
-            <input class="btn__submit" type="submit" value="INGRESAR">
-            <a class="form__recover" href="index1.html">¿Olvidaste la contraseña?</a>
-        </form>
-    </div>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="styles1.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-route.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="ctrl.js"></script>
+  </head>
+
+  <body ng-app="computer">
+    <div ng-view></div>
+  </body>
 </html>

@@ -147,3 +147,31 @@ BEGIN
 	WHERE EMPLEADO.Cedula = @Cedula
 END
 GO
+-- =============================================
+-- Author:		Efren Carvajal Valverde
+-- Create date: 15/10/17
+-- Description:	Devuelve la informacion de un empelado especifico(login)
+-- =============================================
+CREATE PROCEDURE SelectInfoEmpleado 
+	-- Add the parameters for the stored procedure here
+	@IDEmpleado int,
+	@Pass VarChar(20)
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT EMPLEADO.Nombre1, EMPLEADO.Nombre2, EMPLEADO.Apellido1, EMPLEADO.Apellido2, EMPLEADO.Provincia,
+		EMPLEADO.Canton, EMPLEADO.Distrito, EMPLEADO.Indicaciones, EMPLEADO.Cedula, EMPLEADO.FNacimiento, EMPLEADO.Telefono,
+		COMPAÑIA.Nombre as Compañia, ROL.Descripcion as Roll, SUCURSAL.Nombre as Sucursal
+	FROM (((EMPLEADO
+		INNER JOIN COMPAÑIA ON EMPLEADO.IDCompañia = COMPAÑIA.ID)
+		INNER JOIN ROL ON EMPLEADO.IDRol = ROL.ID)
+		INNER JOIN SUCURSAL ON EMPLEADO.IDSucursal = SUCURSAL.ID)
+	Where EMPLEADO.Cedula = @IDEmpleado and EMPLEADO.Contraseña=@Pass and EMPLEADO.Activo=1 
+	FOR JSON PATH , WITHOUT_ARRAY_WRAPPER;;
+END
+GO
